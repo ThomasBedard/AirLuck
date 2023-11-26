@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Sensor Charts</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 400px; /* Fixed height for chart containers */
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        canvas {
+            background-color: #fafafa;
+            border-radius: 5px;
+            height: 100%; /* Make canvas take the full height of the container */
+        }
+	.back-link{
+	    display: block;
+	    margin: 20 px 0;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .back-link:hover{
+            text-decoration: underline;
+        } 
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>Temperature Chart</h2>
+
+    <a href="/" class="back-link"> <- Go Back</a>
+    <br><br><br>
+
+        <canvas id="temperatureChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>Pressure Chart</h2>
+        <canvas id="pressureChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>Humidity Chart</h2>
+        <canvas id="humidityChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>CO2 Chart</h2>
+        <canvas id="co2Chart"></canvas>
+    <br><br>
+
+    <script>
+        const temperatureChartCtx = document.getElementById('temperatureChart').getContext('2d');
+        const pressureChartCtx = document.getElementById('pressureChart').getContext('2d');
+        const humidityChartCtx = document.getElementById('humidityChart').getContext('2d');
+	const co2ChartCtx = document.getElementById('co2Chart').getContext('2d');
+
+
+        const temperatureChart = new Chart(temperatureChartCtx, createChartConfig('Temperature (°C)', 'rgb(255, 99, 132)'));
+        const pressureChart = new Chart(pressureChartCtx, createChartConfig('Pressure (hPa)', 'rgb(54, 162, 235)'));
+        const humidityChart = new Chart(humidityChartCtx, createChartConfig('Humidity (%)', 'rgb(75, 192, 192)'));
+	const co2Chart = new Chart(co2ChartCtx, createChartConfig('CO2 (ppm)', 'rgb(153, 102, 255)'));
+
+        function createChartConfig(label, color) {
+            return {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: label,
+                        backgroundColor: color,
+                        borderColor: color,
+                        data: [],
+                        fill: false,
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+        }
+
+        function fetchDataAndUpdateCharts() {
+            fetch('/get-sensor-data')
+                .then(response => response.json())
+                .then(data => {
+                    updateChartData(temperatureChart, data.labels, data.data_temp);
+                    updateChartData(pressureChart, data.labels, data.data_pressure);
+                    updateChartData(humidityChart, data.labels, data.data_humidity);
+		    updateChartData(co2Chart, data.labels, data.data_eco2);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function updateChartData(chart, labels, data) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        setInterval(fetchDataAndUpdateCharts, 1000);
+        window.onload = fetchDataAndUpdateCharts;
+    </script>
+</body>
+</html>
+
