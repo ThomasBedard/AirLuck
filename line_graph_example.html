@@ -2,65 +2,43 @@
 <html lang="en">
 <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Styling/line_graph_example.css">
     <title>Sensor Charts</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            text-align: center;
-        }
-        .chart-container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            height: 400px; /* Fixed height for chart containers */
-        }
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        canvas {
-            background-color: #fafafa;
-            border-radius: 5px;
-            height: 100%; /* Make canvas take the full height of the container */
-        }
-	.back-link{
-	    display: block;
-	    margin: 20 px 0;
-            text-decoration: none;
-            color: #007bff;
-            font-size: 16px;
-        }
-        .back-link:hover{
-            text-decoration: underline;
-        } 
-    </style>
+
+
 </head>
-<body>
+<body class="container">
+
+    <div class="typewriter">
+        <h1 id="title">Line Graphs</h1>
+    </div>
+    
+
+    <button id="btn" href="/"> Go Back</button>
+
+
     <div class="chart-container">
         <h2>Temperature Chart</h2>
-
-    <a href="/" class="back-link"> <- Go Back</a>
-    <br><br><br>
-
         <canvas id="temperatureChart"></canvas>
-    </div><br><br><br>
+    </div>
+
+
     <div class="chart-container">
         <h2>Pressure Chart</h2>
         <canvas id="pressureChart"></canvas>
-    </div><br><br><br>
+    </div>
+
+
     <div class="chart-container">
         <h2>Humidity Chart</h2>
         <canvas id="humidityChart"></canvas>
-    </div><br><br><br>
+    </div>
+
+
     <div class="chart-container">
         <h2>CO2 Chart</h2>
         <canvas id="co2Chart"></canvas>
-    <br><br>
+    
 
     <script>
         const temperatureChartCtx = document.getElementById('temperatureChart').getContext('2d');

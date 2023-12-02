@@ -6,19 +6,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="Styling/main.css">
+    <link rel="stylesheet" href="Styling/login.css">
 </head>
 
-<body>
-    <h1>Login Page</h1>
-
-    <form method="POST" action="">
+<body class="container">
+     
+    <!--<form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.username }}
         {{ form.password }}
         {{ form.submit }}
     </form>
+-->
 
-    <a href="{{ url_for('register') }}">Don't have an account? Sign Up</a>
+    <form method="POST" class="form" action="">
+        <p class="form-title">Sign in to your account</p>
+         <div class="input-container">
+           <input type="text" placeholder="Enter username">
+           <span>
+           </span>
+       </div>
+       <div class="input-container">
+           <input type="password" placeholder="Enter password">
+         </div>
+          <button type="submit" class="submit">
+         Sign in
+       </button>
+ 
+       <p class="signup-link">
+         No account?
+         <a href="{{ url_for('register') }}">Sign up</a>
+       </p>
+    </form>
+
 </body>
 
 </html>

@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Sensor Data</title>
+    <link rel="stylesheet" href="Styling/main.css">
+    <link rel="stylesheet" href="Styling/index.css">
     <script>
         function fetchData() {
     		fetch('/get-latest-sensor-data')
@@ -26,54 +28,35 @@
 	setInterval(fetchData, 1000);
 	window.onload = fetchData;
     </script>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 20px;
-      }
-      h1 {
-        color: #333;
-        margin-bottom: 40px;
-        text-align: center;
-      }
-      p {
-        background-color: #fff;
-        text-align: center;
-        display: block;
-        padding: 10px 20px;
-        margin: 10px auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-      a {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 40px;
-            transition: background-color 0.3s;
-        }
-      a:hover {
-        background-color: #0056b3;
-      }
-    </style>
   </head>
-  <body>
-    <h1>BME280 Sensor Data</h1>
-    <p>Temperature: <strong id="temperature"></strong></p>
-    <p>Pressure: <strong id="pressure"></strong></p>
-    <p>Humidity: <strong id="humidity"></strong></p>
-    <p>CO2: <strong id="co2"></strong></p>
+  <body class="container">
+    <div class="typewriter">
+      <h1 id="title">BME280 Sensor Data</h1>
+    </div>
+    
+
+    <div class="box">
+      <p id="textStyle">Temperature: <strong id="temperature"></strong></p>
+    
+
+      <p id="textStyle">Pressure: <strong id="pressure"></strong></p>
+    
+
+      <p id="textStyle">Humidity: <strong id="humidity"></strong></p>
+    
+
+      <p id="textStyle">CO2: <strong id="co2"></strong></p>
+    </div>  
 
 
-    <a href="/line-charts">View Line Graphs</a>
 
-    {% if current_user.is_authenticated %}
-	<a href="{{ url_for('logout') }}">Logout</a>
-    {% endif %}
+    <button id="btn" href="/line-charts">View Line Graphs</button>
+
+    <!--{% if current_user.is_authenticated %}-->
+    
+	<button href="{{ url_for('logout') }}">Logout</button>
+
+    <!--{% endif %}-->
  
   </body>
 </html>
