@@ -35,6 +35,14 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
 
+class SensorData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    temperature = db.Column(db.Float)
+    pressure = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    eco2 = db.Column(db.Float)
+
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
@@ -49,6 +57,7 @@ class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Login')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -110,8 +119,10 @@ def collect_data():
 
         try:
             data_eco2.append(ens.eCO2)  # Directly read eCO2 value
+            eco2_value = ens.eCO2
         except Exception as e:
             print("Error reading from ENS160:", e)
+            eco2_value = None
 
 
         if len(data_temp) > 30:
@@ -119,6 +130,18 @@ def collect_data():
             data_pressure.pop(0)
             data_humidity.pop(0)
             labels.pop(0)
+
+
+        timestamp = datetime.now()
+        new_record = SensorData(temperature=temperature_c, pressure=pressure, humidity=humidity, eco2=eco2_value)
+
+        with app.app_context():
+            db.session.add(new_record)
+            db.session.commit()
+
+        # Save to text file
+        with open('sensor_data.txt', 'a') as f:
+            f.write(f"{timestamp}, {temperature_c}, {pressure}, {humidity}, {eco2_value}\n")
 
         time.sleep(1)
 
