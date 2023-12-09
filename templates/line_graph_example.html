@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Sensor Charts</title>
+    <!--
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 400px; /* Fixed height for chart containers */
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        canvas {
+            background-color: #fafafa;
+            border-radius: 5px;
+            height: 100%; /* Make canvas take the full height of the container */
+        }
+	.back-link{
+	    display: block;
+	    margin: 20 px 0;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .back-link:hover{
+            text-decoration: underline;
+        } 
+    </style>
+    -->
+    <style>
+		html, body {
+		  font-family: Arial, sans-serif;
+		  margin: 0;
+		  padding: 0;
+		  display: flex;
+		  justify-content: center;
+		}
+
+		.typewriter h1 {
+		  overflow: hidden; 
+		  border-right: .12em solid black; 
+		  white-space: nowrap; 
+		  margin: 0 auto; 
+		  letter-spacing: .15em; 
+		  animation: 
+			typing 0.7s steps(40, end),
+			blink-caret .75s step-end infinite;
+		}
+
+		@keyframes typing {
+		  from { width: 0 }
+		  to { width: 100% }
+		}
+
+		@keyframes blink-caret {
+		  from, to { border-color: transparent }
+		  50% { border-color: black; }
+		}
+
+		#title {
+		  color: white;
+		  margin-bottom: 40px;
+		  text-align: center;
+		  width: fit-content;
+		}
+
+		body {
+		  font-family: 'Arial', sans-serif;
+		  background-color: #f4f4f4;
+		  padding: 20px;
+		  text-align: center;
+		}
+		.chart-container {
+		  width: 80%;
+		  margin: 20px auto;
+		  background: rgba(214, 214, 214, 0.7);
+		  border-radius: 16px;
+		  border: 1px solid rgba(219, 219, 219, 0.7);
+		  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+		  height: 400px; 
+		  padding: 100px;
+		}
+		h2 {
+		  color: #333;
+		  margin-bottom: 20px;
+		}
+
+		.back-link{
+		display: block;
+		margin: 20 px 0;
+		  text-decoration: none;
+		  color: #007bff;
+		  font-size: 16px;
+		}
+		.back-link:hover{
+		  text-decoration: underline;
+		} 
+
+		.container {
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  flex-direction: column; 
+		  justify-content: center; 
+		  align-items: center; 
+		  background-color: #313131;
+		  background-image: radial-gradient(rgba(255, 255, 255, 0.171) 2px, transparent 0);
+		  background-size: 30px 30px;
+		  background-position: -5px -5px;
+		}
+
+
+		button {
+		  background-color: white;
+		  color: black;
+		  border-radius: 10em;
+		  font-size: 17px;
+		  font-weight: 600;
+		  padding: 1em 2em;
+		  cursor: pointer;
+		  transition: all 0.3s ease-in-out;
+		  border: 1px solid #28684A;
+		  box-shadow: black;
+		  margin: 12px;
+		}
+
+		button:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px black;
+		};
+
+		button:active {
+		  transform: translateY(2px) translateX(1px);
+		  box-shadow: black;
+		};
+    </style>
+</head>
+<body class="container">
+		<div class="typewriter">
+			<h2>Temperature Chart</h2>
+		</div>
+		
+    <a href="/" class="back-link"> <- Go Back</a>
+    <br><br><br>
+    
+	<div class="chart-container">
+        <canvas id="temperatureChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>Pressure Chart</h2>
+        <canvas id="pressureChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>Humidity Chart</h2>
+        <canvas id="humidityChart"></canvas>
+    </div><br><br><br>
+    <div class="chart-container">
+        <h2>CO2 Chart</h2>
+        <canvas id="co2Chart"></canvas>
+    <br><br>
+
+
+    <script>
+        const temperatureChartCtx = document.getElementById('temperatureChart').getContext('2d');
+        const pressureChartCtx = document.getElementById('pressureChart').getContext('2d');
+        const humidityChartCtx = document.getElementById('humidityChart').getContext('2d');
+	const co2ChartCtx = document.getElementById('co2Chart').getContext('2d');
+
+
+        const temperatureChart = new Chart(temperatureChartCtx, createChartConfig('Temperature (°C)', 'rgb(255, 99, 132)'));
+        const pressureChart = new Chart(pressureChartCtx, createChartConfig('Pressure (hPa)', 'rgb(54, 162, 235)'));
+        const humidityChart = new Chart(humidityChartCtx, createChartConfig('Humidity (%)', 'rgb(75, 192, 192)'));
+	const co2Chart = new Chart(co2ChartCtx, createChartConfig('CO2 (ppm)', 'rgb(153, 102, 255)'));
+
+        function createChartConfig(label, color) {
+            return {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: label,
+                        backgroundColor: color,
+                        borderColor: color,
+                        data: [],
+                        fill: false,
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+        }
+
+        function fetchDataAndUpdateCharts() {
+            fetch('/get-sensor-data')
+                .then(response => response.json())
+                .then(data => {
+                    updateChartData(temperatureChart, data.labels, data.data_temp);
+                    updateChartData(pressureChart, data.labels, data.data_pressure);
+                    updateChartData(humidityChart, data.labels, data.data_humidity);
+		    updateChartData(co2Chart, data.labels, data.data_eco2);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function updateChartData(chart, labels, data) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        setInterval(fetchDataAndUpdateCharts, 1000);
+        window.onload = fetchDataAndUpdateCharts;
+    </script>
+</body>
+</html>
+
