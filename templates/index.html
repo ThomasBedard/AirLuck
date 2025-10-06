@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sensor Data</title>
+    <script>
+        function fetchData() {
+    		fetch('/get-latest-sensor-data')
+        	.then(response => response.json())
+        	.then(data => {
+            		document.getElementById('temperature').textContent = data['temperature'] + "°C";
+            		document.getElementById('pressure').textContent = data['pressure'] + "hPa";
+            		document.getElementById('humidity').textContent = data['humidity'] + "%";
+                        document.getElementById('co2').textContent = data['eco2'] + " ppm";
+        	})
+        	.catch(error => {
+            		console.error('Error fetching data:', error);
+			
+			document.getElementById('temperature').textContent = "N/A";
+			document.getElementById('pressure').textContent = "N/A";
+			document.getElementById('humidity').textContent ="N/A";
+                        document.getElementById('co2').textContent ="N/A";
+		});
+	}
+	
+	setInterval(fetchData, 1000);
+	window.onload = fetchData;
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+        height: 100%;
+		margin: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center; 
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 40px;
+        text-align: center;
+      }
+      p {
+        background-color: #fff;
+        text-align: center;
+        display: block;
+        padding: 10px 20px;
+        margin: 10px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 40px;
+            transition: background-color 0.3s;
+        }
+      a:hover {
+        background-color: #0056b3;
+      }
+      
+      #title {
+		  color: white;
+		  margin-bottom: 40px;
+		  text-align: center;
+		  width: fit-content;
+		}
+
+		#textStyle {
+		  padding: 15px;
+		  color: rgb(183, 183, 183);
+		  font-size: 1.2em;
+		}
+
+		.typewriter h1 {
+		  overflow: hidden; 
+		  border-right: .12em solid black; 
+		  white-space: nowrap; 
+		  margin: 0 auto; 
+		  letter-spacing: .15em; 
+		  animation: 
+			typing 1.5s steps(40, end),
+			blink-caret .75s step-end infinite;
+		}
+
+		@keyframes typing {
+		  from { width: 0 }
+		  to { width: 100% }
+		}
+
+		@keyframes blink-caret {
+		  from, to { border-color: transparent }
+		  50% { border-color: black; }
+		}
+
+		/* White Glass card */
+		.box {
+		  background: rgba(214, 214, 214, 0.01);
+		  border-radius: 16px;
+		  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+		  backdrop-filter: blur(5px);
+		  -webkit-backdrop-filter: blur(5px);
+		  border: 1px solid rgba(219, 219, 219, 0.7);
+		  width: fit-content;
+		  margin: 50px;
+		  padding: 30px;
+		}
+
+
+		.container {
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  flex-direction: column; 
+		  justify-content: center; 
+		  align-items: center; 
+		  background-color: #313131;
+		  background-image: radial-gradient(rgba(255, 255, 255, 0.171) 2px, transparent 0);
+		  background-size: 30px 30px;
+		  background-position: -5px -5px;
+		}
+
+
+		button {
+		  background-color: white;
+		  color: black;
+		  border-radius: 10em;
+		  font-size: 17px;
+		  font-weight: 600;
+		  padding: 1em 2em;
+		  cursor: pointer;
+		  transition: all 0.3s ease-in-out;
+		  border: 1px solid #28684A;
+		  box-shadow: black;
+		  margin: 12px;
+		}
+
+		button:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px black;
+		};
+
+		button:active {
+		  transform: translateY(2px) translateX(1px);
+		  box-shadow: black;
+		};
+
+
+		.typewriter h1 {
+		  overflow: hidden; 
+		  border-right: .12em solid white; 
+		  white-space: nowrap; 
+		  margin: 0 auto; 
+		  letter-spacing: .15em; 
+		  animation: 
+			typing 1.5s steps(40, end),
+			blink-caret .75s step-end infinite;
+		}
+
+		@keyframes typing {
+		  from { width: 0 }
+		  to { width: 100% }
+		}
+
+		@keyframes blink-caret {
+		  from, to { border-color: transparent }
+		  50% { border-color: black; }
+		}
+
+    </style> 
+  </head>
+
+  <body  class="container">
+	<div class="typewriter">
+		<h1 id="title">BME280 Sensor Data</h1>
+	</div>
+	<div class="box">
+		<p id="textStyle">Temperature: <strong id="temperature"></strong></p>
+		<p id="textStyle">Pressure: <strong id="pressure"></strong></p>
+		<p id="textStyle">Humidity: <strong id="humidity"></strong></p>
+		<p id="textStyle">CO2: <strong id="co2"></strong></p>
+	</div>
+
+    <a href="/line-charts">View Line Graphs</a>
+
+    {% if current_user.is_authenticated %}
+	<a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+ 
+  </body>
+</html>

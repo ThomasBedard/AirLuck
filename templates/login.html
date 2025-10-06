@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <style>
+      		#title {
+		  color: white;
+		  margin-bottom: 40px;
+		  text-align: center;
+		  width: fit-content;
+		}
+		.form {
+		  background: rgba(214, 214, 214, 0.01);
+		  border-radius: 16px;
+		  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+		  backdrop-filter: blur(5px);
+		  -webkit-backdrop-filter: blur(5px);
+		  border: 1px solid rgba(219, 219, 219, 0.7);
+		  width: fit-content;
+		  margin: 50px;
+		  padding: 20px;
+		}
+
+		.form-title {
+		  font-size: 1.25rem;
+		  line-height: 1.75rem;
+		  font-weight: 600;
+		  text-align: center;
+		  color: white;
+		}
+
+		.input-container {
+		  position: relative;
+		}
+
+		.input-container input, .form button {
+		  outline: none;
+		  border: 1px solid #e5e7eb;
+		  margin: 8px 0;
+		}
+
+		.input-container input {
+		  background-color: #fff;
+		  padding: 1rem;
+		  padding-right: 3rem;
+		  font-size: 0.875rem;
+		  line-height: 1.25rem;
+		  width: 300px;
+		  border-radius: 0.5rem;
+		  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+		}
+
+		.submit {
+		  display: block;
+		  padding-top: 0.75rem;
+		  padding-bottom: 0.75rem;
+		  padding-left: 1.25rem;
+		  padding-right: 1.25rem;
+		  background-color: white;
+		  color: black;
+		  font-size: 0.875rem;
+		  line-height: 1.25rem;
+		  font-weight: 500;
+		  width: 100%;
+		  border-radius: 0.5rem;
+		  text-transform: uppercase;
+		}
+
+		.signup-link {
+		  color: #6B7280;
+		  font-size: 0.875rem;
+		  line-height: 1.25rem;
+		  text-align: center;
+		}
+
+		.signup-link a {
+		  text-decoration: underline;
+		  color: white;
+		}
+		
+		html, body {
+		  font-family: Arial, sans-serif;
+		  height: 100%;
+		  margin: 0;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center; 
+		}
+
+		.container {
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  flex-direction: column; 
+		  justify-content: center; 
+		  align-items: center; 
+		  background-color: #313131;
+		  background-image: radial-gradient(rgba(255, 255, 255, 0.171) 2px, transparent 0);
+		  background-size: 30px 30px;
+		  background-position: -5px -5px;
+		}
+
+
+		button {
+		  background-color: white;
+		  color: black;
+		  border-radius: 10em;
+		  font-size: 17px;
+		  font-weight: 600;
+		  padding: 1em 2em;
+		  cursor: pointer;
+		  transition: all 0.3s ease-in-out;
+		  border: 1px solid #28684A;
+		  box-shadow: black;
+		  margin: 12px;
+		}
+
+		button:hover {
+		  transform: translateY(-4px) translateX(-2px);
+		  box-shadow: 2px 5px black;
+		};
+
+		button:active {
+		  transform: translateY(2px) translateX(1px);
+		  box-shadow: black;
+		};
+
+
+		.typewriter h1 {
+		  overflow: hidden; 
+		  border-right: .12em solid black; 
+		  white-space: nowrap; 
+		  margin: 0 auto; 
+		  letter-spacing: .15em; 
+		  animation: 
+			typing 1.5s steps(40, end),
+			blink-caret .75s step-end infinite;
+		}
+
+		@keyframes typing {
+		  from { width: 0 }
+		  to { width: 100% }
+		}
+
+		@keyframes blink-caret {
+		  from, to { border-color: transparent }
+		  50% { border-color: black; }
+		}
+    </style>
+
+</head>
+
+<body class="container">
+    <h1 id="title">Login Page</h1>
+
+    <form action="" method="POST" class="form">
+		
+		<p class="form-title">Sign in to your account</p>
+			{{ form.hidden_tag() }}
+		<div class="input-container">
+        
+			{{ form.username }}
+        </div>
+        <div class="input-container">
+			{{ form.password }}
+        </div>
+        <div class="input-container">
+			{{ form.submit }}
+        </div>
+        
+	<p class="signup-link">
+         	No account?
+        	<a href="{{ url_for('register') }}">Sign up</a>
+        </p>
+
+    </form>
+
+</body>
+<!--
+<body>
+    <h1>Login Page</h1>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+
+    <a href="{{ url_for('register') }}">Don't have an account? Sign Up</a>
+</body>
+-->
+
+</html>
